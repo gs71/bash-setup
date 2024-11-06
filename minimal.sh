@@ -31,10 +31,10 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
     # Colored prompt, to differentiate it from command output
     if [ "$UID" = "0" ]; then
         # Red prompt for root
-        PS1='\[\e[01;31m\]\u@\h\[\e[00m\]:$PWD\$ '
+        PS1='\[\e[01;31m\]\u@\h\[\e[00m\]:\[\e[01;33m\]$PWD\[\e[00m\]\$ '
     else
         # Green prompt for regular user
-        PS1='\[\e[01;32m\]\u@\h\[\e[00m\]:$PWD\$ '
+        PS1='\[\e[01;32m\]\u@\h\[\e[00m\]:\[\e[01;33m\]$PWD\[\e[00m\]\$ '
     fi
 
     # Colored grep and ls
