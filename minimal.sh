@@ -26,7 +26,7 @@ export HISTTIMEFORMAT=''
 # Color stuff, if terminal supports it
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
     # Fix directory color (on some terminals blue on black is unreadable)
-    export LS_COLORS='di=1;35'
+    hash dircolors 2> /dev/null && eval $(dircolors -b | sed 's/di=01;34/di=01;35/')
 
     # Colored prompt, to differentiate it from command output
     if [ "$UID" = "0" ]; then
@@ -55,16 +55,20 @@ fi
 export PROMPT_COMMAND='echo -ne "\e]0;${HOSTNAME%%.*}:${PWD}\a"'
 
 # history aliases
-type h > /dev/null 2>&1 || alias h="history"
-type ht > /dev/null 2>&1 || alias ht="HISTTIMEFORMAT='%F_%T ' history"
-type hg > /dev/null 2>&1 || alias hg="history | grep"
+hash h 2> /dev/null || alias h="history"
+hash ht 2> /dev/null || alias ht="HISTTIMEFORMAT='%F_%T ' history"
+hash hg 2> /dev/null || alias hg="history | grep"
 
 # ls aliases
-type l > /dev/null 2>&1 || alias l='ls -lA'
-type ll > /dev/null 2>&1 || alias ll='ls -l'
-type llz > /dev/null 2>&1 || alias llz='ls -lA -Sr'
-type llt > /dev/null 2>&1 || alias llt='ls -lA -tr'
-type llg > /dev/null 2>&1 || alias llg='ls -lA | grep'
+hash l 2> /dev/null || alias l='ls -lA'
+hash ll 2> /dev/null || alias ll='ls -l'
+hash llz 2> /dev/null || alias llz='ls -lA -Sr'
+hash llt 2> /dev/null || alias llt='ls -lA -tr'
+hash llg 2> /dev/null || alias llg='ls -lA | grep'
 
-# Quick grep for process
-type psg > /dev/null 2>&1 || function psg { LANG=C ps -e -o user:20,pid,ppid,c,stime,tty,time,cmd | sed -n "1p; / $$ .* sed .* $$/d; /$1/p" ; }
+# journalctl aliases
+hash j 2> /dev/null || alias j='journalctl -e'
+hash je 2> /dev/null || alias je='journalctl -p err'
+
+# ps aliases
+hash psg 2> /dev/null || function psg { LANG=C ps -e -o user:20,pid,ppid,c,stime,tty,time,cmd | sed -n "1p; / $$ .* sed .* $$/d; /$1/p" ; }
