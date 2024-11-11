@@ -25,6 +25,9 @@ export HISTTIMEFORMAT=''
 
 # Color stuff, if terminal supports it
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+    # Fix directory color (on some terminals blue on black is unreadable)
+    # hash dircolors 2> /dev/null && eval $(dircolors -b | sed 's/di=01;34/di=01;35/')
+    
     # Colored prompt, to differentiate it from command output
     if [ "$UID" = "0" ]; then
         # Red prompt for root
