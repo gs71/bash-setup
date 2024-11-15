@@ -1,7 +1,7 @@
 #
 # Minimal settings and aliases for a comfortable bash experience
 #
-# Used by Monaco Digital team - version 20241105
+# Used by Monaco Digital team - version 20241115
 #
 
 # Append to the history file, don't overwrite it
@@ -13,7 +13,11 @@ shopt -s histverify
 # History expansion with the space key
 bind 'Space: magic-space'
 
-# Search through history with up/down arrows (default pgup/pgdn sucks on laptops)
+# Search through history with pgup/pgdown (sucks on laptops)
+bind '"\e[5~": history-search-backward'
+bind '"\e[6~": history-search-forward'
+
+# Search through history with up/down arrows
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
@@ -68,7 +72,7 @@ hash llg 2> /dev/null || alias llg='ls -lA | grep'
 
 # journalctl aliases
 hash j 2> /dev/null || alias j='journalctl -e'
-hash je 2> /dev/null || alias je='journalctl -p err'
+hash je 2> /dev/null || alias je='journalctl -p err -e'
 
 # ps aliases
 hash psg 2> /dev/null || function psg { LANG=C ps -e -o user:20,pid,ppid,c,stime,tty,time,cmd | sed -n "1p; / $$ .* sed .* $$/d; /$1/p" ; }
