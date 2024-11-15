@@ -10,6 +10,9 @@ shopt -s histappend
 # History expansion before executing the command
 shopt -s histverify
 
+# Disable the bloody terminal bell
+bind 'set bell-style none'
+
 # History expansion with the space key
 bind 'Space: magic-space'
 
