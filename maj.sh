@@ -29,15 +29,17 @@ logprint "Update script $0 started"
 
 title "APT update"
 logprint "Starting apt-get update"
-apt-get update | tee -a $LOGFILE
+apt-get -o apt::cmd::show-update-stats=true update | tee -a $LOGFILE
 
-title "APT upgrade"
-logprint "Starting apt-get upgrade"
-#apt-get -y upgrade | tee -a $LOGFILE
-
-title "APT purge"
-logprint "Starting apt-get purge"
-apt-get -y purge ~c | tee -a $LOGFILE
+if [ grep "packages can be upgraded" $LOGIFLE ]; then
+  title "APT upgrade"
+  logprint "Starting apt-get upgrade"
+  #apt-get -y upgrade | tee -a $LOGFILE
+  
+  title "APT purge"
+  logprint "Starting apt-get purge"
+  apt-get -y purge ~c | tee -a $LOGFILE
+fi
 
 title "Systemd services"
 systemctl list-units --full --type=service | grep '\.service ' | tee -a $LOGFILE
@@ -53,17 +55,17 @@ echo "OS: $(lsb_release -ds 2> /dev/null)"
 echo "Kernel: $(uname -r)"
 echo "Uptime: $(uptime -p)"
 echo "APT packages: $(dpkg --list | grep -c ^ii)"
-[ -x /usr/bin/snap] && echo "Snap packages: $(snap list | grep -c -v ^Name)"
+[ -x /usr/bin/snap ] && echo "Snap packages: $(snap list | grep -c -v ^Name)"
 timedatectl | sed 's/^[ \t]*//'
 ) | tee -a $LOGFILE
 
 title "APT details"
-grep -E '(^\[|error|Err:|cannot|failed to write)' $LOGFILE | tee -a $LOGFILE
+grep -E '(^\[|^Unpacking|^Processing|^Get:|^Fetched|error|Err:|cannot|failed to write)' $LOGFILE | tee -a $LOGFILE
 
 LAST_KERNEL=$(dpkg -l | grep "linux-image-[^g]" | grep ^ii | cut -d " " -f 3 | sort | tail -n 1)
 if [[ -n "$LAST_KERNEL" && "$(uname -r)" != "$LAST_KERNEL" ]]; then
   echo
-  echo "WARNING: kernel $LAST_KERNEL has been installed: reboot needed!" | tee -a $LOGFILE
+  echo "WARNING: kernel $LAST_KERNEL has been installed: reboot needed" | tee -a $LOGFILE
   echo
 fi
 
