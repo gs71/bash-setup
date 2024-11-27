@@ -24,17 +24,20 @@ fi
 
 touch $LOGFILE
 
+logprint "Update script $0 started"
+
 title "APT update"
 logprint "Starting apt-get update"
 apt-get update | tee -a $LOGFILE
 
-
 exit
 
 title "APT upgrade"
+logprint "Starting apt-get upgrade"
 apt-get -y upgrade | tee -a $LOGFILE
 
 title "APT purge"
+logprint "Starting apt-get purge"
 apt-get -y purge ~c | tee -a $LOGFILE
 
 title "Systemd services"
@@ -52,6 +55,9 @@ timedatectl | sed 's/^[ \t]*//'
 echo; df -h -T -x fuse.snapfuse -x tmpfs -x overlay
 echo; echo "Memory:"; free -h
 ) | tee -a $LOGFILE
+
+title "APT details"
+grep '^\[' $LOGFILE | tee -a $LOGFILE
 
 LAST_KERNEL=$(dpkg -l | grep "linux-image-[^g]" | grep ^ii | cut -d " " -f 3 | sort | tail -n 1)
 if [[ -n "$LAST_KERNEL" && "$(uname -r)" != "$LAST_KERNEL" ]]; then
