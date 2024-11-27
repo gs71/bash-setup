@@ -4,6 +4,7 @@ LANG=C
 
 SEP="--------------------------------------------------------------------------------"
 LOGFILE="/home/svc_supcockpit/maj.log"
+STARTDATE=$(date '+%F %X')
 
 function title {
   (
@@ -57,7 +58,7 @@ timedatectl | sed 's/^[ \t]*//'
 ) | tee -a $LOGFILE
 
 title "APT details"
-grep '^\[' $LOGFILE | tee -a $LOGFILE
+grep -E '(^\[|error|Err:|cannot|failed to write)' $LOGFILE | tee -a $LOGFILE
 
 LAST_KERNEL=$(dpkg -l | grep "linux-image-[^g]" | grep ^ii | cut -d " " -f 3 | sort | tail -n 1)
 if [[ -n "$LAST_KERNEL" && "$(uname -r)" != "$LAST_KERNEL" ]]; then
@@ -66,19 +67,13 @@ if [[ -n "$LAST_KERNEL" && "$(uname -r)" != "$LAST_KERNEL" ]]; then
   echo
 fi
 
-APT_ERRORS=$(grep -E '(error|Err:|cannot|failed to write)' $LOGFILE)
-if [ -n "$APT_ERRORS" ]; then
-  title "APT errors"
-  echo "$APT_ERRORS" | tee -a $LOGFILE
-fi
-
 FAILED_SERVICES=$(grep "\.service .* failed " $LOGFILE)
 if [ -n "$FAILED_SERVICES" ]; then
   title "Systemd failed services"
   echo "$FAILED_SERVICES" | tee -a $LOGFILE
 fi
 
-SYSTEMD_ERRORS=$(journalctl --no-pager -p err --since today)
+SYSTEMD_ERRORS=$(journalctl --no-pager -p err --since "$STARTDATE")
 if [ -n "$SYSTEMD_ERRORS" ]; then
   title "Systemd errors"
   echo "$SYSTEMD_ERRORS" | tee -a $LOGFILE
