@@ -15,7 +15,7 @@ function title {
 }
 
 function logprint {
-  echo "[$(date '+%F %X')] $1" | tee -a $LOGFILE
+  echo "[$(date '+%F %X')] $1" >> $LOGFILE
 }
 
 if [ -e "$LOGFILE" ]; then
