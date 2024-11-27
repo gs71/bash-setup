@@ -41,6 +41,10 @@ apt-get -y purge ~c | tee -a $LOGFILE
 title "Systemd services"
 systemctl list-units --full --type=service | grep '\.service ' | tee -a $LOGFILE
 
+title "System information"
+echo; df -h -T -x fuse.snapfuse -x tmpfs -x overlay
+echo; echo "Memory:"; free -h
+
 title "ALERTES"
 (
 echo "Hostname: $(hostname)"
@@ -48,10 +52,8 @@ echo "OS: $(lsb_release -ds 2> /dev/null)"
 echo "Kernel: $(uname -r)"
 echo "Uptime: $(uptime -p)"
 echo "APT packages: $(dpkg --list | grep -c ^ii)"
-echo "Snap packages: $(snap list | grep -c -v ^Name)"
+[ -x /usr/bin/snap] && echo "Snap packages: $(snap list | grep -c -v ^Name)"
 timedatectl | sed 's/^[ \t]*//'
-echo; df -h -T -x fuse.snapfuse -x tmpfs -x overlay
-echo; echo "Memory:"; free -h
 ) | tee -a $LOGFILE
 
 title "APT details"
