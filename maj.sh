@@ -31,7 +31,7 @@ title "APT update"
 logprint "Starting apt-get update"
 apt-get -o apt::cmd::show-update-stats=true update | tee -a $LOGFILE
 
-if [ grep -q "packages can be upgraded" $LOGFILE ]; then
+if grep -q "packages can be upgraded" $LOGFILE; then
   title "APT upgrade"
   logprint "Starting apt-get upgrade"
   #apt-get -y upgrade | tee -a $LOGFILE
