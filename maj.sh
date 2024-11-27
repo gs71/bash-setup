@@ -30,11 +30,9 @@ title "APT update"
 logprint "Starting apt-get update"
 apt-get update | tee -a $LOGFILE
 
-exit
-
 title "APT upgrade"
 logprint "Starting apt-get upgrade"
-apt-get -y upgrade | tee -a $LOGFILE
+#apt-get -y upgrade | tee -a $LOGFILE
 
 title "APT purge"
 logprint "Starting apt-get purge"
