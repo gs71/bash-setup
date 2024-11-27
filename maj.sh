@@ -28,6 +28,7 @@ title "APT update"
 logprint "Starting apt-get update"
 apt-get update | tee -a $LOGFILE
 
+
 exit
 
 title "APT upgrade"
