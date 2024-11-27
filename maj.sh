@@ -73,7 +73,7 @@ if [ -n "$FAILED_SERVICES" ]; then
   echo "$FAILED_SERVICES" | tee -a $LOGFILE
 fi
 
-SYSTEMD_ERRORS=$(journalctl --no-pager -p err --since "$STARTDATE")
+SYSTEMD_ERRORS=$(journalctl --no-pager -p err --since "$STARTDATE" | grep -v -- '-- No entries --')
 if [ -n "$SYSTEMD_ERRORS" ]; then
   title "Systemd errors"
   echo "$SYSTEMD_ERRORS" | tee -a $LOGFILE
