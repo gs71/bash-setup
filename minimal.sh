@@ -1,9 +1,10 @@
 #
 # Minimal settings and aliases for a comfortable bash experience
 #
-# Used by Monaco Digital team - version 20241115
+# Used by Monaco Digital team - version 20241128
 #
 
+# Exit if shell is not bash
 [ -z "$BASH_VERSION" ] && exit
 
 # Append to the history file, don't overwrite it
