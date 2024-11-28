@@ -1,7 +1,7 @@
 #
 # Minimal settings and aliases for a comfortable bash experience
 #
-# Used by Monaco Digital team - version 20241128
+# Used by Monaco Digital admin team - version 20241128
 #
 
 # Minimal PATH
