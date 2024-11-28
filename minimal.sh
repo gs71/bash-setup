@@ -5,7 +5,7 @@
 #
 
 # Minimal PATH
-if [ "$UID" = "0" ]; then
+if [ "$EUID" -eq 0 ]; then
     PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin
 else
     PATH=/usr/local/bin:/usr/bin
