@@ -4,6 +4,8 @@
 # Used by Monaco Digital team - version 20241115
 #
 
+[ -z "$BASH_VERSION" ] && exit
+
 # Append to the history file, don't overwrite it
 shopt -s histappend
 
