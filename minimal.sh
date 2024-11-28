@@ -4,6 +4,13 @@
 # Used by Monaco Digital team - version 20241128
 #
 
+# Minimal PATH
+if [ "$UID" = "0" ]; then
+    PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin
+else
+    PATH=/usr/local/bin:/usr/bin
+fi
+
 # Exit if shell is not bash
 [ -z "$BASH_VERSION" ] && exit
 
@@ -52,13 +59,6 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
     alias egrep='egrep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias ls='ls --color=auto'
-fi
-
-# Minimal PATH
-if [ "$UID" = "0" ]; then
-    PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin
-else
-    PATH=/usr/local/bin:/usr/bin
 fi
 
 # Show hostname and current directory in window title
